@@ -587,8 +587,8 @@ def train_with_data(test_data, dataset="dataset2.csv"):
     score = 0
 
     for i in range(len(y_pred)):
-        t_score = y_pred[0]
-        result = y_pred[1]
+        t_score = y_pred[i][0]
+        result = y_pred[i][1]
         if result == "Positive":
             score += t_score
         else:
