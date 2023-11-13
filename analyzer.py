@@ -24,6 +24,7 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 from nltk.stem.wordnet import WordNetLemmatizer
+import pickle
 
 _ALPHA_MIN = 1e-10
 
@@ -596,8 +597,67 @@ def train_with_data(test_data, dataset="dataset2.csv"):
                 score -= t_score
 
         return score / len(y_pred)
-    
+
     except ValueError as e:
         # Handle the exception here, e.g., by returning an error message or taking appropriate action.
         return "Model not fitted. Please fit the model before making predictions."
 
+
+def process_with_model(test_data, modelpath):
+    try:
+        with open(modelpath, "rb") as file:
+            loaded_model = pickle.load(file)
+            vectorizer = CountVectorizer()
+            X_test_vec = vectorizer.transform(test_data)
+            y_pred = loaded_model.predict(X_test_vec)
+
+            score = 0
+
+            for i in range(len(y_pred)):
+                t_score = y_pred[i][0]
+                result = y_pred[i][1]
+                if result == "Positive":
+                    score += t_score
+                else:
+                    score -= t_score
+
+            return score / len(y_pred)
+
+    except Exception:
+        print("Encountered exception, Error code 404")
+
+
+def save_training_model(test_data, dataset="dataset2.csv"):
+    try:
+        reviews, scores = clean_data(dataset)
+        X_test = test_data
+        sample = []
+        for i in X_test:
+            sample.append(process_review(i))
+
+        vectorizer = CountVectorizer()
+        X_train_vec = vectorizer.fit_transform(reviews)
+        X_test_vec = vectorizer.transform(sample)
+        clf = MultinomialNB()
+        clf.fit(X_train_vec, scores)
+        y_pred = clf.predict(X_test_vec)
+        # Save the model to a file
+        filename = "sentimentclassificationmodel.pkl"
+        with open(filename, "wb") as file:
+            pickle.dump(clf, file)
+
+        score = 0
+
+        for i in range(len(y_pred)):
+            t_score = y_pred[i][0]
+            result = y_pred[i][1]
+            if result == "Positive":
+                score += t_score
+            else:
+                score -= t_score
+
+        return score / len(y_pred)
+
+    except ValueError as e:
+        # Handle the exception here, e.g., by returning an error message or taking appropriate action.
+        return "Model not fitted. Please fit the model before making predictions."
