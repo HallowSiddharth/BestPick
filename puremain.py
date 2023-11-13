@@ -4,6 +4,9 @@ import time
 import random
 import emoji
 import analyzer
+from flask import Flask, request, render_template
+
+app = Flask(__name__)
 
 def search(searchterm):
     words = searchterm.split()
@@ -15,7 +18,6 @@ def search(searchterm):
     asin_elements = soup.find_all('div', {'data-asin': True})
     asin_list = [i['data-asin'] for i in asin_elements if i['data-asin'] !='']
     return asin_list
-
 
 def extract_from_asin(asin):
     contents = {"user-agent":'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0', 'accept-language':'en-IN,en;q=0.9'}
@@ -31,12 +33,15 @@ def extract_from_asin(asin):
     scrapedreviews = []
     for review in review_element:
         content = review.select_one("span.review-text")
-        scrapedreviews.append(content.text)
+        if content is not None:
+            scrapedreviews.append(content.text)
     final = []
     for review in scrapedreviews:
         rev = ''.join(c for c in review if c not in emoji.EMOJI_DATA)
         final.append(rev)
     return title_element.contents[0],final
+
+
 
 def process_query(query):
     asins = search(query)
@@ -50,21 +55,44 @@ def process_query(query):
 def generate_score(reviews):
     pass
 
-#if "__name__" == "__main__":
-query = input("Query: ")
-d = process_query(query)
-answers = []
-for product in d:
-    asin = product[0]
-    title = product[1]
-    reviews = d[product]
-    score = analyzer.train_with_data(reviews,r"dataset2.csv")
-    answers.append([score,title])
+@app.route('/')
+def hello():
+    message = "Welcome to the Flask example!"
+    return render_template('index.html', message=message)
 
-answers.sort()
+# @app.route('/process_url', methods=['POST'])
+# def process_url():
+#     product_url = request.form.get('product_url')
+#     return f"You entered the following URL: {product_url}"
 
-print("Best:" , answers[-1][:15])
-print()
-print("Second:", answers[-2][:15])
-print()
-print("Third:", answers[-3][:15])
+@app.route('/process_url', methods=['POST'])
+def search_endpoint():
+    query = request.form.get('product_url')
+    d = process_query(query)
+    answers = []
+    for product in d:
+        asin, title = product
+        reviews = d[product]
+        score = analyzer.train_with_data(reviews, "dataset2.csv")
+        image_url = get_image_url_for_product(asin)  
+        answers.append([score, title, image_url])
+    answers.sort(reverse=True)  # Sort results by score in descending order
+
+    best = answers[0] if answers else None
+    second = answers[1] if len(answers) > 1 else None
+    third = answers[2] if len(answers) > 2 else None
+    print('ANSWERS')
+    print(answers)
+    print(best,second,third)
+    print(best[0],best[1],best[2])
+
+    return render_template('search_results.html', best=best, second=second, third=third)
+
+@app.route('/get_image_url_for_product', methods=['POST'])
+def get_image_url_for_product(asin):
+    # Assuming the ASIN is valid
+    product_url = f"https://www.amazon.in/dp/{asin}"
+    return product_url
+
+if __name__ == '__main__':
+    app.run(debug=True)
