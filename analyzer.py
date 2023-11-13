@@ -600,11 +600,11 @@ def train_with_data(test_data, dataset="dataset2.csv"):
 
     except ValueError as e:
         # Handle the exception here, e.g., by returning an error message or taking appropriate action.
-        return "Model not fitted. Please fit the model before making predictions."
+        return -1
 
 
 def process_with_model(test_data, modelpath):
-    try:
+    
         with open(modelpath, "rb") as file:
             loaded_model = pickle.load(file)
             vectorizer = CountVectorizer()
@@ -623,41 +623,39 @@ def process_with_model(test_data, modelpath):
 
             return score / len(y_pred)
 
-    except Exception:
-        print("Encountered exception, Error code 404")
+    # except Exception:
+    #     print("Encountered exception, Error code 404")
 
 
 def save_training_model(test_data, dataset="dataset2.csv"):
-    try:
-        reviews, scores = clean_data(dataset)
-        X_test = test_data
-        sample = []
-        for i in X_test:
-            sample.append(process_review(i))
 
-        vectorizer = CountVectorizer()
-        X_train_vec = vectorizer.fit_transform(reviews)
-        X_test_vec = vectorizer.transform(sample)
-        clf = MultinomialNB()
-        clf.fit(X_train_vec, scores)
-        y_pred = clf.predict(X_test_vec)
-        # Save the model to a file
-        filename = "sentimentclassificationmodel.pkl"
-        with open(filename, "wb") as file:
-            pickle.dump(clf, file)
+    reviews, scores = clean_data(dataset)
+    X_test = test_data
+    sample = []
+    for i in X_test:
+        sample.append(process_review(i))
 
-        score = 0
+    vectorizer = CountVectorizer()
+    X_train_vec = vectorizer.fit_transform(reviews)
+    X_test_vec = vectorizer.transform(sample)
+    clf = MultinomialNB()
+    clf.fit(X_train_vec, scores)
+    y_pred = clf.predict(X_test_vec)
+    # Save the model to a file
+    filename = "sentimentclassificationmodel.pkl"
+    with open(filename, "wb") as file:
+        pickle.dump(clf, file)
 
-        for i in range(len(y_pred)):
-            t_score = y_pred[i][0]
-            result = y_pred[i][1]
-            if result == "Positive":
-                score += t_score
-            else:
-                score -= t_score
+    score = 0
 
-        return score / len(y_pred)
+    for i in range(len(y_pred)):
+        t_score = y_pred[i][0]
+        result = y_pred[i][1]
+        if result == "Positive":
+            score += t_score
+        else:
+            score -= t_score
 
-    except ValueError as e:
-        # Handle the exception here, e.g., by returning an error message or taking appropriate action.
-        return "Model not fitted. Please fit the model before making predictions."
+    return score / len(y_pred)
+
+   
