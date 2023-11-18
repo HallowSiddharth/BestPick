@@ -5,7 +5,7 @@ app = Flask(__name__)
 @app.route('/')
 def hello():
     message = "Welcome to the Flask example!"
-    return render_template('index.html', message=message)
+    return render_template('search_results.html', message=message)
 
 @app.route('/process_url', methods=['POST'])
 def process_url():

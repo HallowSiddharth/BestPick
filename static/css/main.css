@@ -36,7 +36,7 @@ a:hover {
 }
 
 h1,
-h2,
+h3,
 h3,
 h4,
 h5,
@@ -58,7 +58,7 @@ section {
   position: relative;
 }
 
-.section-header h2 {
+.section-header h3 {
   font-size: 32px;
   font-weight: 700;
   text-transform: uppercase;
@@ -72,7 +72,7 @@ section {
   position: relative;
 }
 
-.section-header h2:after {
+.section-header h3:after {
   content: "";
   position: absolute;
   display: block;
@@ -105,7 +105,7 @@ section {
 }
 
 @media (max-width: 640px) {
-  .section-header h2 {
+  .section-header h3 {
     font-size: 28px;
     margin-bottom: 15px;
   }
@@ -133,7 +133,7 @@ section {
   inset: 0;
 }
 
-.breadcrumbs .page-header h2 {
+.breadcrumbs .page-header h3 {
   font-size: 56px;
   font-weight: 500;
   color: #fff;
@@ -1700,7 +1700,7 @@ section {
   color: rgba(255, 255, 255, 0.8);
 }
 
-.hero h2 {
+.hero h3 {
   margin-bottom: 20px;
   padding: 0;
   font-size: 48px;
@@ -1709,7 +1709,7 @@ section {
 }
 
 @media (max-width: 575px) {
-  .hero h2 {
+  .hero h3 {
     font-size: 30px;
   }
 }
