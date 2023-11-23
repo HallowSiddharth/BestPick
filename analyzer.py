@@ -78,7 +78,9 @@ class _BaseNB(ClassifierMixin, BaseEstimator, metaclass=ABCMeta):
         answers = self.classes_[np.argmax(jll, axis=1)]
         final = []
         for i in range(len(answers)):
-            result = [max(data[i]) - min(data[i]), answers[i]]
+            #result = [max(data[i][0]) - min(data[i]), answers[i]]
+            result = [data[i][0] - data[i][1], answers[i]]
+
             final.append(result)
 
         return final
@@ -565,7 +567,7 @@ def clean_data(dataset):
             d[i] += 1
         else:
             d[i] = 1
-    print(d)
+    #print(d)
     reviews = modrev
     scores = modscore
     return (reviews, scores)
@@ -585,16 +587,20 @@ def train_with_data(test_data, dataset="dataset2.csv"):
         clf = MultinomialNB()
         clf.fit(X_train_vec, scores)
         y_pred = clf.predict(X_test_vec)
-
+        # print("Y predictions:")
+        # print(y_pred)   
         score = 0
 
         for i in range(len(y_pred)):
             t_score = y_pred[i][0]
-            result = y_pred[i][1]
-            if result == "Positive":
-                score += t_score
-            else:
-                score -= t_score
+            score += t_score
+        # for i in range(len(y_pred)):
+        #     t_score = y_pred[i][0]
+        #     result = y_pred[i][1]
+        #     if result == "Positive":
+        #         score += t_score
+        #     else:
+        #         score -= t_score
 
         return score / len(y_pred)
 

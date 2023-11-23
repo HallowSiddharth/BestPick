@@ -5,6 +5,7 @@ import random
 import emoji
 import analyzer
 import pickle
+import threading
 
 def search(searchterm):
     print("Searching up stuff")
@@ -82,30 +83,92 @@ def process_query(query):
         master_reviews[(asin[0], name, asin[1])] = reviews
     return master_reviews
 
+def thread_work(asin,master_reviews):
+    print("Searching Asin")
+    #time.sleep(random.uniform(0.2, 1.0))
+    name, reviews = extract_from_asin(asin)
+    master_reviews[(asin[0], name, asin[1])] = reviews
+    
+
+def process_query_thread(query):
+    print("Query processing")
+    asins = search(query)
+    #time.sleep(random.uniform(0.2, 1.0))
+    master_reviews = {}
+    threads = []
+    for asin in asins:
+        threads.append(threading.Thread(target=thread_work,args=[asin,master_reviews]))
+    for i in threads:
+        i.start()
+    for i in threads:
+        i.join()
+    return master_reviews
 
 def generate_score(reviews):
     pass
 
+def get_product_info(query):
+    #Without Threading
+    #d = process_query(query)
+    #With Threading, risk of amazon ban
+    d = process_query_thread(query)
+    answers = []
+    for product in d:
+        asin = product[0]
+        title = product[1]
+        image = product[2]
+        reviews = d[product]
+        print("Analyzing",product)
+        #score = analyzer.save_training_model(reviews, r"dataset2.csv")
+        score = analyzer.train_with_data(reviews, "dataset2.csv")
+        url = f"https://www.amazon.in/dp/{asin}"
+        answers.append([score, title, url, image])
+    answers.sort(reverse = True)
+    return answers
 
-# if "__name__" == "__main__":
-query = input("Query: ")
-d = process_query(query)
-answers = []
-for product in d:
+def thread_work2(product,answers,reviews):
     asin = product[0]
     title = product[1]
     image = product[2]
-    reviews = d[product]
+    #reviews = d[product]
     print("Analyzing",product)
     #score = analyzer.save_training_model(reviews, r"dataset2.csv")
     score = analyzer.train_with_data(reviews, "dataset2.csv")
-    answers.append([score, title, image])
+    url = f"https://www.amazon.in/dp/{asin}"
+    answers.append([score, title, url, image])
 
-print(answers)
-answers.sort()
+def get_product_info_threads(query):
+    d = process_query(query)
+    answers = []
+    threads = []
+    for product in d:
+        threads.append(threading.Thread(target=thread_work2,args=[product,answers,d[product]]))
+    for i in threads:
+        i.start()
+    for i in threads:
+        i.join()
+    answers.sort(reverse = True)
+    return answers
 
-print("Best:", answers[-1][:15])
-print()
-print("Second:", answers[-2][:15])
-print()
-print("Third:", answers[-3][:15])
+if "__name__" == "__main__":
+    query = input("Query: ")
+    d = process_query(query)
+    answers = []
+    for product in d:
+        asin = product[0]
+        title = product[1]
+        image = product[2]
+        reviews = d[product]
+        print("Analyzing",product)
+        #score = analyzer.save_training_model(reviews, r"dataset2.csv")
+        score = analyzer.train_with_data(reviews, "dataset2.csv")
+        answers.append([score, title, image])
+
+    print(answers)
+    answers.sort()
+
+    print("Best:", answers[-1][:15])
+    print()
+    print("Second:", answers[-2][:15])
+    print()
+    print("Third:", answers[-3][:15])
