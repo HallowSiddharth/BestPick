@@ -270,16 +270,23 @@ section {
 /*--------------------------------------------------------------
 # Header
 --------------------------------------------------------------*/
+.header2 {
+  background-color: var(--color-default);
+  transition: all 0.5s;
+  z-index: 997;
+  padding: 25px 0;
+  padding-top: 20px;
+}
 .header {
   transition: all 0.5s;
   z-index: 997;
-  padding: 30px 0;
+  padding: 25px 0;
+  padding-top: 20px;
 }
-
 .header.sticked {
-  background: rgba(14, 29, 52, 0.9);
+  background: #1c2a40;
   padding: 15px 0;
-  box-shadow: 0px 2px 20px rgba(14, 29, 52, 0.1);
+  box-shadow: 0px 2px 20px #1c2a40;
 }
 
 .header .logo img {
@@ -1900,4 +1907,74 @@ section {
 
 .footer .credits a {
   color: #fff;
+}
+
+/* ... (your existing CSS) */
+
+/*--------------------------------------------------------------
+# General
+--------------------------------------------------------------*/
+body {
+  font-family: var(--font-default);
+  color: var(--color-default);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: #406aff;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-primary);
+}
+
+/*--------------------------------------------------------------
+# Sections & Section Header
+--------------------------------------------------------------*/
+section {
+  padding: 80px 0;
+  overflow: hidden;
+}
+
+.section-header {
+  text-align: center;
+  padding: 30px 0;
+  position: relative;
+}
+
+/*--------------------------------------------------------------
+# Hero Section
+--------------------------------------------------------------*/
+#heroo h2 {
+  font-family: var(--font-secondary);
+}
+
+/*--------------------------------------------------------------
+# Search Results Section
+--------------------------------------------------------------*/
+.result-title {
+  font-family: var(--font-primary);
+}
+
+.go-button {
+  background-color: var(--color-secondary);
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+/* Set a fixed height for result boxes */
+.result-box {
+  height: 600px; /* Adjust the height as needed */
 }

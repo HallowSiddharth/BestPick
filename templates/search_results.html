@@ -26,7 +26,27 @@
     
     <!-- Template Main CSS File -->
     <link href="static/css/main.css" rel="stylesheet">
-  
+    <style>
+      .header {
+          background-color: var(--color-feature); /* Replace with the variable or color you want */
+          transition: all 0.5s;
+          z-index: 997;
+          padding: 25px 0;
+          padding-top: 20px;
+      }
+
+      .header.sticked {
+  background: #1c2a40;
+  padding: 15px 0;
+  box-shadow: 0px 2px 20px #1c2a40;
+}
+
+.header.fixed {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+  </style>
 </head>
 <body>
   <!-- ======= Header ======= -->
@@ -40,21 +60,22 @@
       <nav id="navbar" class="navbar">
       </nav><!-- .navbar -->
     </div>
-  </header><!-- End Header -->
+  </header>
+  <!-- End Header -->
   <!-- End Header -->
   
   <!-- ======= Hero Section ======= -->
-  <section id="heroo" class="heroo d-flex align-items-center">
+  <section id="heroo" class="heroo d-flex align-items-center" style="background: url('static/hero-bg.png') center/cover no-repeat; padding: 80px 0;">
     <div class="container">
       <div class="row gy-4 d-flex justify-content-between">
         <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center">
-          <h3 data-aos="fade-up">Discover the Best: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Just a Search Away!</h3>
+          <br>
+          <h3 data-aos="fade-up">Discover the Best: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Just a Search Away!</h3>
           <p data-aos="fade-up" data-aos-delay="100"></p>
           <form action="/process_url" method="post" class="form-search d-flex align-items-stretch mb-3" data-aos="fade-up" data-aos-delay="200">
             <input type="text" class="form-control" name="product_url" placeholder="Enter the keyword">
             <button type="submit" class="btn btn-primary">Search</button>
           </form>
-          
         </div>
       </div>
     </div>
@@ -88,7 +109,7 @@
         background-color: var(--color-secondary);
         color: #fff;
         text-decoration: none;
-        padding: 5px 10px;
+        padding: 5px 20px;
         border-radius: 5px;
     }
   </style>

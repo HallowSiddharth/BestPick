@@ -26,6 +26,28 @@
   
   <!-- Template Main CSS File -->
   <link href="static/css/main.css" rel="stylesheet">
+
+  
+  <style>
+    .loading-bar-container {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      background-color: #f0f0f0; /* Background color of the progress bar */
+      z-index: 1000;
+    }
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      background-color: #182555; /* Color of the progress indicator */
+      transition: width 1s linear; /* Animation for smooth progress transition */
+    }
+  </style>
+
 </head>
 <body>
   <!-- ======= Header ======= -->
@@ -59,6 +81,9 @@
     </div>
     <div class="hero-img" style="background-image: url('static/hero-img.jpg');"></div>
   </section>
+  <!-- <div class="loading-bar-container">
+    <div class="progress-bar"></div>
+  </div> -->
 
   <!-- Vendor JS Files -->
   <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -67,6 +92,48 @@
   <script src="static/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="static/vendor/aos/aos.js"></script>
   <script src="static/vendor/php-email-form/validate.js"></script>
+
+  <!-- <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var form = document.querySelector('.form-search');
+      var loadingBarContainer = document.querySelector('.loading-bar-container');
+      var progressBar = document.querySelector('.progress-bar');
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent the form from submitting the traditional way
+
+        // Show the loading bar
+        loadingBarContainer.style.display = 'block';
+
+        // Start the progress animation
+        animateProgressBar(0, 100, 30000, function () {
+          // When animation is complete, submit the form
+          form.submit();
+        });
+      });
+
+      function animateProgressBar(start, end, duration, callback) {
+        var startTime = performance.now();
+
+        function updateProgress(currentTime) {
+          var elapsedTime = currentTime - startTime;
+          var progress = Math.min(1, elapsedTime / duration);
+          var value = start + progress * (end - start);
+
+          progressBar.style.width = value + '%';
+
+          if (progress < 1) {
+            requestAnimationFrame(updateProgress);
+          } else {
+            // Call the callback function after the animation completes
+            callback();
+          }
+        }
+
+        requestAnimationFrame(updateProgress);
+      }
+    });
+  </script> -->
   
   <!-- Template Main JS File -->
   <script src="static/js/main.js"></script>

@@ -23,7 +23,7 @@ def generate_score(reviews):
 
 @app.route('/')
 def hello():
-    message = "Welcome to the Flask example!"
+    message = "Welcome to the Flask"
     return render_template('index.html', message=message)
 
 # @app.route('/process_url', methods=['POST'])
