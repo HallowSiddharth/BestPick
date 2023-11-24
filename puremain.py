@@ -26,6 +26,11 @@ def hello():
     message = "Welcome to the Flask"
     return render_template('index.html', message=message)
 
+
+@app.route('/redirect')
+def redirect():
+    return render_template('index.html')
+
 # @app.route('/process_url', methods=['POST'])
 # def process_url():
 #     product_url = request.form.get('product_url')

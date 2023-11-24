@@ -1977,4 +1977,11 @@ section {
 /* Set a fixed height for result boxes */
 .result-box {
   height: 600px; /* Adjust the height as needed */
+
+}
+
+.result-box img {
+  transform: scale(1); /* Adjust the scale value as needed */
+  max-width: 100%;
+  height: auto;
 }

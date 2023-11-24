@@ -52,7 +52,7 @@
   <!-- ======= Header ======= -->
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
+      <a href="{{ url_for('redirect')}}" class="logo d-flex align-items-center">
         <H1> BestPick</H1>
       </a>
       <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
@@ -117,6 +117,7 @@
     <h2 class="result-title">Search Results</h2>
     <div class="row">
       <div class="col-md-4">
+        
         <div class="result-box">
           {% if best %}
           <img src="{{ best[3] }}" alt="Best Result Image">
